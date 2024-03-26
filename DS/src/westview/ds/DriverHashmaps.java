@@ -47,26 +47,31 @@ public class DriverHashmaps {
 		// which should be outside the src folder
 
 		try {
+			
+			
+			//User input
+			while(true) {
+			
+			Scanner userInput = new Scanner(System.in); // Create a Scanner object 
+			System.out.println("Please enter a State");
+			String state = userInput.nextLine(); // Read user input
+			
 			Scanner scanner = new Scanner(new File("covid417.csv"));
 			String[] row = null;
+			String confirmed = null;
 			while (scanner.hasNextLine()) {
 					row = scanner.nextLine().split(",");
 			}
 			
 			for (int i = 0; i < row.length; i++) {
-				if (row[i].equals("Ohio")) {
-					
+				if (row[i].equals(state)) {
+					confirmed = scanner.next();
 				}
 			}
 
 			scanner.close();
 			
-			//User input
-			while(true) {
-			
-			Scanner userInput = new Scanner(System.in); // Create a Scanner object System.out.println("Please enter a State");
-			String state = userInput.nextLine(); // Read user input
-			System.out.println(state +" state confirmed total is: " + "total here " + ". \n Please enter a city: \n"); // Output user input
+			System.out.println(state +" state confirmed total is: " + confirmed + ". \n Please enter a city: \n"); // Output user input
 			String city = userInput.nextLine(); // Read user input
 			System.out.println("The confirmed number of cases in "+ city +", "+state+" is: ");
 			}

@@ -57,22 +57,30 @@ public class DriverHashmaps {
 				Scanner userInput = new Scanner(System.in); // Create a Scanner object
 				System.out.println("Please enter a State");
 				String state = userInput.nextLine(); // Read user input
-
+				String stateLow = state.trim().toLowerCase();
+				
+				//turn every row into lowercase
 				while (scanner.hasNextLine()) {
 					String[] row = scanner.nextLine().split(",");
-
+					row[0].toLowerCase();
+					row[1].toLowerCase();
 					//check if a row has the state
 					for (int i = 0; i < row.length; i++) {
-						if (row[i].indexOf(state) != -1) {
+						if (row[i].indexOf(stateLow) != -1) {
 							int confirmed = Integer.parseInt(row[2]); // get number of confirmed cases
 							cases += confirmed; // add the integers of confirmed cases to the list
-							m.put(state, cases); // link the state to the number of cases
 						}
 					}
 				}
-				
+				m.put(stateLow, cases); // link the state to the number of cases
 
-				System.out.println(state + " state confirmed total is: " + m.get(state) + ". \n Please enter a city: \n"); 
+				System.out.println(state + " state confirmed total is: " + m.get(stateLow) + ". \n Please enter a city: \n"); 
+				
+				
+				
+				
+				
+				
 				String city = userInput.nextLine(); // Read user input
 				scanner.close();
 				

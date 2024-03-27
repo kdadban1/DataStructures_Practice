@@ -2,6 +2,7 @@ package westview.ds;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -45,69 +46,50 @@ public class DriverHashmaps {
 		// which should be outside the src folder
 
 		try {
-
 			HashMap m = new HashMap<String, Integer>();
-			
 
 			// User input
 			while (true) {
-
-				int cases = 0;
+				int stateCases = 0; // keep track of number of cases total
 				Scanner scanner = new Scanner(new File("covid417.csv"));
 				Scanner userInput = new Scanner(System.in); // Create a Scanner object
 				System.out.println("Please enter a State");
-				String state = userInput.nextLine(); // Read user input
-				String stateLow = state.trim().toLowerCase();
-				
-				//turn every row into lowercase
+				String state = userInput.nextLine().trim().toLowerCase(); // read user input and turn lowercase
+
+				// turn the state lowercase and compare to each state in the file
 				while (scanner.hasNextLine()) {
-					String[] row = scanner.nextLine().split(",");
-					row[0].toLowerCase();
-					row[1].toLowerCase();
-					//check if a row has the state
-					for (int i = 0; i < row.length; i++) {
-						if (row[i].indexOf(stateLow) != -1) {
-							int confirmed = Integer.parseInt(row[2]); // get number of confirmed cases
-							cases += confirmed; // add the integers of confirmed cases to the list
-						}
+					String[] row = scanner.nextLine().toLowerCase().split(",");
+					if (row[1].equals(state)) {
+						int confirmed = Integer.parseInt(row[2].trim()); //get the number of confirmed cases (2nd row)
+						stateCases += confirmed;
 					}
 				}
-				m.put(stateLow, cases); // link the state to the number of cases
+				m.put(state, stateCases); //link the number of cases to the state
 
-				System.out.println(state + " state confirmed total is: " + m.get(stateLow) + ". \n Please enter a city: \n"); 
-				
-				
-				
-				
-				
-				
-				String city = userInput.nextLine(); // Read user input
+				System.out.println(state + " state confirmed total is: " + m.get(state) + ". \n Please enter a city: \n");
+
+				// Now read the city input
+				String city = userInput.nextLine().trim().toLowerCase();
 				scanner.close();
-				
-				
-				Scanner scanner2 = new Scanner(new File("covid417.csv"));
-				cases = 0;
-				while (scanner2.hasNextLine()) {
-					String[] row = scanner2.nextLine().split(",");
 
-					//check if a row has the city
-					for (int i = 0; i < row.length; i++) {
-						if (row[i].indexOf(city) != -1) {
-							int confirmed = Integer.parseInt(row[2]); // get number of confirmed cases
-							cases += confirmed; // add the integers of confirmed cases to the list
-							m.put(city, cases); // link the city to the number of cases
-						}
+				// Open the file again for reading the city data
+				Scanner scanner2 = new Scanner(new File("covid417.csv"));
+				int cityCases = 0; // Reset cityCases for each iteration
+
+				// turn the city lowercase and compare to each row
+				while (scanner2.hasNextLine()) {
+					String[] row = scanner2.nextLine().toLowerCase().split(",");
+					if (row[0].equals(city)) {
+						int confirmed = Integer.parseInt(row[2].trim()); //get the number of confirmed cases (2nd row)
+						cityCases += confirmed;
 					}
 				}
-				
+				m.put(city, cityCases); //link the number of cases to the city
+
 				System.out.println("The confirmed number of cases in " + city + ", " + state + " is: " + m.get(city));
-				
 			}
-
 		} catch (Exception e) {
-
 			System.out.println(e);
-
 		}
 
 	}

@@ -36,46 +36,66 @@ public class DriverHashmaps {
 //		m2.put("Kian", food);
 //
 //		System.out.println(m2.get("Kian"));
-		
-		
-		//# of cases for a particular state
-		
-		HashMap m = new HashMap<String, ArrayList<Integer>>();
-		ArrayList<Integer> cases = new ArrayList<Integer>();
+
+		// # of cases for a particular state
+
+		;
 
 		// get the scanner going to read the csv file
 		// which should be outside the src folder
 
 		try {
+
+			HashMap m = new HashMap<String, Integer>();
 			
-			
-			//User input
-			while(true) {
-			
-			Scanner userInput = new Scanner(System.in); // Create a Scanner object 
-			System.out.println("Please enter a State");
-			String state = userInput.nextLine(); // Read user input
-			
-			Scanner scanner = new Scanner(new File("covid417.csv"));
-			String[] row = null;
-			String confirmed = null;
-			while (scanner.hasNextLine()) {
-					row = scanner.nextLine().split(",");
-			}
-			
-			for (int i = 0; i < row.length; i++) {
-				if (row[i].equals(state)) {
-					confirmed = scanner.next();
+
+			// User input
+			while (true) {
+
+				int cases = 0;
+				Scanner scanner = new Scanner(new File("covid417.csv"));
+				Scanner userInput = new Scanner(System.in); // Create a Scanner object
+				System.out.println("Please enter a State");
+				String state = userInput.nextLine(); // Read user input
+
+				while (scanner.hasNextLine()) {
+					String[] row = scanner.nextLine().split(",");
+
+					//check if a row has the state
+					for (int i = 0; i < row.length; i++) {
+						if (row[i].indexOf(state) != -1) {
+							int confirmed = Integer.parseInt(row[2]); // get number of confirmed cases
+							cases += confirmed; // add the integers of confirmed cases to the list
+							m.put(state, cases); // link the state to the number of cases
+						}
+					}
 				}
+				
+
+				System.out.println(state + " state confirmed total is: " + m.get(state) + ". \n Please enter a city: \n"); 
+				String city = userInput.nextLine(); // Read user input
+				scanner.close();
+				
+				
+				Scanner scanner2 = new Scanner(new File("covid417.csv"));
+				cases = 0;
+				while (scanner2.hasNextLine()) {
+					String[] row = scanner2.nextLine().split(",");
+
+					//check if a row has the city
+					for (int i = 0; i < row.length; i++) {
+						if (row[i].indexOf(city) != -1) {
+							int confirmed = Integer.parseInt(row[2]); // get number of confirmed cases
+							cases += confirmed; // add the integers of confirmed cases to the list
+							m.put(city, cases); // link the city to the number of cases
+						}
+					}
+				}
+				
+				System.out.println("The confirmed number of cases in " + city + ", " + state + " is: " + m.get(city));
+				
 			}
 
-			scanner.close();
-			
-			System.out.println(state +" state confirmed total is: " + confirmed + ". \n Please enter a city: \n"); // Output user input
-			String city = userInput.nextLine(); // Read user input
-			System.out.println("The confirmed number of cases in "+ city +", "+state+" is: ");
-			}
-			
 		} catch (Exception e) {
 
 			System.out.println(e);
